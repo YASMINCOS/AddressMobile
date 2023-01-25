@@ -14,7 +14,7 @@
         android:theme="@style/Theme.AgendaCEP"
         tools:targetApi="31">
         <activity
-            android:name=".HistoricAddress"
+            android:name=".HistoricAddressActivity"
             android:label="@string/app_name"
             android:exported="true">
             <intent-filter>
@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".FormAddress"
+            android:name=".FormAddressActivity"
             android:exported="true">
             <meta-data
                 android:name="android.app.lib_name"

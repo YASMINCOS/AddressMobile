@@ -24,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FormAddress extends AppCompatActivity {
+public class FormAddressActivity extends AppCompatActivity {
 
     ActivityFormAddressBinding binding;
     private static final String TITULO_APPBAR_NOVO_CEP = "Novo cep";
@@ -65,7 +65,7 @@ public class FormAddress extends AppCompatActivity {
 
 
                 if (cep.isEmpty()) {
-                    Toast.makeText(FormAddress.this, "Preencha o campo do cep", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormAddressActivity.this, "Preencha o campo do cep", Toast.LENGTH_SHORT).show();
 
                 } else {
                     API api = retrofit.create(API.class);
@@ -81,9 +81,9 @@ public class FormAddress extends AppCompatActivity {
                                 String district = response.body().getBairro().toString();
                                 String city = response.body().getLocalidade().toString();
                                 String uf = response.body().getUf().toString();
-                                Form(publicPlace, district, city, uf);
+                                form(publicPlace, district, city, uf);
                             } else {
-                                Toast.makeText(FormAddress.this, "Cep Inválido!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FormAddressActivity.this, "Cep Inválido!", Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -91,7 +91,7 @@ public class FormAddress extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<Address> call, Throwable t) {
 
-                            Toast.makeText(FormAddress.this, "Ocorreu um erro inesperado", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FormAddressActivity.this, "Ocorreu um erro inesperado", Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -99,6 +99,7 @@ public class FormAddress extends AppCompatActivity {
             }
 
         });
+
 
     }
 
@@ -150,11 +151,11 @@ public class FormAddress extends AppCompatActivity {
     }
 
     private void startFields() {
-        fieldCodeZip = findViewById(R.id.editCodeZip);
-        fieldPublicPlace = findViewById(R.id.editPublicSpace);
-        fieldDistrict = findViewById(R.id.editDistrict);
-        fieldCity = findViewById(R.id.editCity);
-        fieldState = findViewById(R.id.editState);
+        fieldCodeZip = binding.editCodeZip;
+        fieldPublicPlace = binding.editPublicSpace;
+        fieldDistrict = binding.editDistrict;
+        fieldCity = binding.editCity;
+        fieldState = binding.editState;
 
     }
 
@@ -172,7 +173,7 @@ public class FormAddress extends AppCompatActivity {
         address.setUf(uf);
     }
 
-    public void Form(String publicPlace, String district, String city, String uf) {
+    public void form(String publicPlace, String district, String city, String uf) {
         binding.editPublicSpace.setText(publicPlace);
         binding.editDistrict.setText(district);
         binding.editCity.setText(city);

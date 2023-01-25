@@ -13,18 +13,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.yasmin.agendacep.databinding.ActivityFormAddressBinding;
+import com.yasmin.agendacep.databinding.ActivityHistoricAddressBinding;
 import com.yasmin.agendacep.model.Address;
 
-public class HistoricAddress extends AppCompatActivity {
+public class HistoricAddressActivity extends AppCompatActivity {
 
 
+    ActivityHistoricAddressBinding binding;
     private static final String TITULO_APPBAR = "Lista de endereços";
     private ListAddressView listAddressView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_historic_address);
+        binding = ActivityHistoricAddressBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());;
         setTitle(TITULO_APPBAR);
         listAddressView = new ListAddressView(this);
         toSetUpFabNewAddress();
@@ -43,7 +47,7 @@ public class HistoricAddress extends AppCompatActivity {
 
         int itemId = item.getItemId();
         if (itemId == R.id.activity_lista_alunos_menu_remover) {
-            listAddressView.confirmaRemocao(item);
+            listAddressView.checkRemove(item);
         }
 
         return super.onContextItemSelected(item);
@@ -55,7 +59,7 @@ public class HistoricAddress extends AppCompatActivity {
     }
 
     private void openFormInsertAddress() {
-        startActivity(new Intent(this, FormAddress.class));
+        startActivity(new Intent(this, FormAddressActivity.class));
     }
 
     @Override
@@ -79,7 +83,7 @@ public class HistoricAddress extends AppCompatActivity {
     }
 
     private void openFormEditAddress(Address address) {
-        Intent goFromFormActivity = new Intent(HistoricAddress.this, FormAddress.class);
+        Intent goFromFormActivity = new Intent(HistoricAddressActivity.this, FormAddressActivity.class);
         goFromFormActivity.putExtra(CHAVE_ADDRESS, String.valueOf(address));
         startActivity(goFromFormActivity);
     }

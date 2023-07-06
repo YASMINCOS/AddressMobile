@@ -19,12 +19,14 @@ public class ListAddressView {
     public ListAddressView(Context context) {
         this.context = context;
         this.adapter = new ListAddressAdapter(this.context);
+        //configiurar
+        //allomaintread-exception
         dao = AddressDatabase.getInstance(context)
                 .getRoomAddressDao();
 
     }
 
-    public void checkRemove(final MenuItem item) {
+    public void confirmaRemocao(final MenuItem item) {
         new AlertDialog
                 .Builder(context)
                 .setTitle("Removendo endereço")
@@ -51,5 +53,4 @@ public class ListAddressView {
     public void tosetUpAdapter(ListView listAddress) {
         listAddress.setAdapter(adapter);
     }
-
 }

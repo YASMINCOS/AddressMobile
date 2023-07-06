@@ -2,16 +2,15 @@ package com.yasmin.agendacep;
 
 import static com.yasmin.agendacep.ConstantesActivies.CHAVE_ADDRESS;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.yasmin.agendacep.api.API;
 import com.yasmin.agendacep.database.AddressDatabase;
@@ -25,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class FormAddressActivity extends AppCompatActivity {
+public class FormAddress extends AppCompatActivity {
 
     ActivityFormAddressBinding binding;
     private static final String TITULO_APPBAR_NOVO_CEP = "Novo cep";
@@ -38,7 +37,6 @@ public class FormAddressActivity extends AppCompatActivity {
     //ADD
     private RoomAddressDAO dao;
     private Address address;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +64,7 @@ public class FormAddressActivity extends AppCompatActivity {
 
 
                 if (cep.isEmpty()) {
-                    Toast.makeText(FormAddressActivity.this, "Preencha o campo do cep", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(FormAddress.this, "Preencha o campo do cep", Toast.LENGTH_SHORT).show();
 
                 } else {
                     API api = retrofit.create(API.class);
@@ -76,15 +74,15 @@ public class FormAddressActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Call<Address> call, Response<Address> response) {
 
-                            if (response.code() == 200) {
+                            if (response.code() == 200){
 
                                 String publicPlace = response.body().getLogradouro().toString();
                                 String district = response.body().getBairro().toString();
                                 String city = response.body().getLocalidade().toString();
                                 String uf = response.body().getUf().toString();
-                                form(publicPlace, district, city, uf);
-                            } else {
-                                Toast.makeText(FormAddressActivity.this, "Cep Inválido!", Toast.LENGTH_SHORT).show();
+                                Form(publicPlace,district,city,uf);
+                            }else{
+                                Toast.makeText(FormAddress.this, "Cep Inválido!", Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -92,7 +90,7 @@ public class FormAddressActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<Address> call, Throwable t) {
 
-                            Toast.makeText(FormAddressActivity.this, "Ocorreu um erro inesperado", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FormAddress.this, "Ocorreu um erro inesperado", Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -101,9 +99,7 @@ public class FormAddressActivity extends AppCompatActivity {
 
         });
 
-
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater()
@@ -114,7 +110,7 @@ public class FormAddressActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.activity_formulario_aluno_menu_salvar) {
+        if(itemId == R.id.activity_formulario_aluno_menu_salvar){
             finishForm();
         }
         return super.onOptionsItemSelected(item);
@@ -152,11 +148,11 @@ public class FormAddressActivity extends AppCompatActivity {
     }
 
     private void startFields() {
-        fieldCodeZip = binding.editCodeZip;
-        fieldPublicPlace = binding.editPublicSpace;
-        fieldDistrict = binding.editDistrict;
-        fieldCity = binding.editCity;
-        fieldState = binding.editState;
+        fieldCodeZip = findViewById(R.id.editCodeZip);
+        fieldPublicPlace = findViewById(R.id.editPublicSpace);
+        fieldDistrict = findViewById(R.id.editDistrict);
+        fieldCity = findViewById(R.id.editCity);
+        fieldState = findViewById(R.id.editState);
 
     }
 
@@ -174,24 +170,11 @@ public class FormAddressActivity extends AppCompatActivity {
         address.setUf(uf);
     }
 
-    public void form(String publicPlace, String district, String city, String uf) {
+    public void Form(String publicPlace, String district, String city, String uf){
         binding.editPublicSpace.setText(publicPlace);
         binding.editDistrict.setText(district);
         binding.editCity.setText(city);
         binding.editState.setText(uf);
 
     }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putString("Cep: ", fieldCodeZip.getText().toString());
-        outState.putString("Logradouro:", fieldPublicPlace.getText().toString());
-        outState.putString("Estado:", fieldState.getText().toString());
-        outState.putString("Cidade: ", fieldCity.getText().toString());
-        outState.putString("Bairro: ", fieldDistrict.getText().toString());
-
-        Log.i("Salvando cep:", fieldCodeZip.getText().toString());
     }
-}

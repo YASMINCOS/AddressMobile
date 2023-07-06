@@ -2,34 +2,29 @@ package com.yasmin.agendacep;
 
 import static com.yasmin.agendacep.ConstantesActivies.CHAVE_ADDRESS;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.yasmin.agendacep.databinding.ActivityFormAddressBinding;
-import com.yasmin.agendacep.databinding.ActivityHistoricAddressBinding;
 import com.yasmin.agendacep.model.Address;
 
-public class HistoricAddressActivity extends AppCompatActivity {
+public class HistoricAddress extends AppCompatActivity {
 
 
-    ActivityHistoricAddressBinding binding;
     private static final String TITULO_APPBAR = "Lista de endereços";
-    private ListAddressView listAddressView;
+    private  ListAddressView listAddressView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityHistoricAddressBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());;
+        setContentView(R.layout.activity_historic_address);
         setTitle(TITULO_APPBAR);
         listAddressView = new ListAddressView(this);
         toSetUpFabNewAddress();
@@ -48,7 +43,7 @@ public class HistoricAddressActivity extends AppCompatActivity {
 
         int itemId = item.getItemId();
         if (itemId == R.id.activity_lista_alunos_menu_remover) {
-            listAddressView.checkRemove(item);
+            listAddressView.confirmaRemocao(item);
         }
 
         return super.onContextItemSelected(item);
@@ -60,7 +55,7 @@ public class HistoricAddressActivity extends AppCompatActivity {
     }
 
     private void openFormInsertAddress() {
-        startActivity(new Intent(this, FormAddressActivity.class));
+        startActivity(new Intent(this, FormAddress.class));
     }
 
     @Override
@@ -77,24 +72,15 @@ public class HistoricAddressActivity extends AppCompatActivity {
     }
 
     private void toSetUpListenerClick(ListView listAddress) {
-        listAddress.setOnItemClickListener((adapterView, view, position, id) -> {
-            Address addressChosen = (Address) adapterView.getItemAtPosition(position);
+        listAddress.setOnItemClickListener((adapterView, view, posicao, id) -> {
+            Address addressChosen = (Address) adapterView.getItemAtPosition(posicao);
             openFormEditAddress(addressChosen);
         });
     }
 
     private void openFormEditAddress(Address address) {
-        Intent goFromFormActivity = new Intent(HistoricAddressActivity.this, FormAddressActivity.class);
+        Intent goFromFormActivity = new Intent(HistoricAddress.this, FormAddress.class);
         goFromFormActivity.putExtra(CHAVE_ADDRESS, String.valueOf(address));
         startActivity(goFromFormActivity);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        outState.putString("Histórico: ", listAddressView.toString());
-
-
     }
 }
